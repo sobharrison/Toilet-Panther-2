@@ -34,17 +34,22 @@ class User {
 var users = {};
 
 io.on('connection', (socket) => {
-  console.log(`User connected with socket ID: ${socket.id}`);
-  users[socket.id] = new User(socket.id, "test");
-  console.log(users);
+  console.log(`User connected with socket ID: `+ socket.id);
+  users[socket.id] = new User(socket.id, null);
+  //console.log(users);
 
-  socket.on('move', (data) => {
-    io.emit('updateGameState', updatedGameState);
+  //socket.on('move', (data) => {
+  //  io.emit('updateGameState', updatedGameState);
+  //});
+
+  socket.on('nickname', (data) => {
+    users[socket.id].nickname = data;
+    console.log('User: '+socket.id+' set nickname: '+data);
   });
 
   socket.on('disconnect', () => {
-    console.log(`User disconnected with socket ID: ${socket.id}`);
+    console.log(`User disconnected with socket ID: ` + socket.id);
     delete users[socket.id];
-    console.log(users);
+    //console.log(users);
   });
 });

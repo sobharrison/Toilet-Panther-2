@@ -2,4 +2,5 @@
 
 const socket = io();
 
-socket.emit('test');
+let nickname = prompt("Please enter a nickname :)");
+socket.emit('nickname', nickname);
