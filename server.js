@@ -24,10 +24,24 @@ server.listen(port, () => {
 
 ///// Socket IO ////////////////////////////////////////
 
+const DEFAULT_AMMO = 3;
+
 class User {
-  constructor(id, nickname) {
+  constructor(id) {
     this.id = id;
-    this.nickname = nickname;
+    this.nickname = null;
+    this.points = 0;
+    this.ammo = DEFAULT_AMMO;
+    this.x = 0; // position x
+    this.y = 0; // position y
+    this.dx = 0; // velocity x
+    this.dy = 0; // velocity y
+    this.keystates = {
+      "up": false,
+      "down": false,
+      "left": false,
+      "right": false
+    };
   }
 }
 
@@ -35,7 +49,7 @@ var users = {};
 
 io.on('connection', (socket) => {
   console.log(`User connected with socket ID: `+ socket.id);
-  users[socket.id] = new User(socket.id, null);
+  users[socket.id] = new User(socket.id);
   //console.log(users);
 
   //socket.on('move', (data) => {
@@ -46,6 +60,11 @@ io.on('connection', (socket) => {
     users[socket.id].nickname = data;
     console.log('User: '+socket.id+' set nickname: '+data);
   });
+
+  socket.on('keystate', (data) => {
+    users[socket.id].keystates = data;
+    console.log(users[socket.id].nickname, users[socket.id].keystates);
+  })
 
   socket.on('disconnect', () => {
     console.log(`User disconnected with socket ID: ` + socket.id);
