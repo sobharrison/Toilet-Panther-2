@@ -8,6 +8,7 @@ const io = socketio(server);
 
 const port = process.env.PORT || 3000;
 
+///// Express //////////////////////////////////////////
 
 // Define the directory containing your static files (e.g., HTML, CSS, JavaScript).
 app.use(express.static(__dirname + '/webcontent'));
@@ -21,18 +22,29 @@ server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-io.on('connection', (socket) => {
-  console.log('A user connected');
+///// Socket IO ////////////////////////////////////////
 
-  // Handle game-related events, such as player movements, actions, etc.
-  // Example:
+class User {
+  constructor(id, nickname) {
+    this.id = id;
+    this.nickname = nickname;
+  }
+}
+
+var users = {};
+
+io.on('connection', (socket) => {
+  console.log(`User connected with socket ID: ${socket.id}`);
+  users[socket.id] = new User(socket.id, "test");
+  console.log(users);
+
   socket.on('move', (data) => {
-    // Handle player movement
-    // Broadcast the updated game state to all connected clients
     io.emit('updateGameState', updatedGameState);
   });
 
   socket.on('disconnect', () => {
-    console.log('A user disconnected');
+    console.log(`User disconnected with socket ID: ${socket.id}`);
+    delete users[socket.id];
+    console.log(users);
   });
 });
