@@ -5,6 +5,9 @@ const socket = io();
 let nickname = prompt("Please enter a nickname :)");
 socket.emit('nickname', nickname);
 
+const c = document.getElementById("gameCanvas");
+const gameview = c.getContext("2d");
+
 ///// Keyboard input //////////
 
 var keystates = {
@@ -46,3 +49,21 @@ function keyHandler(pressed, code, repeat) {
 
 document.addEventListener("keydown", (event) => keyHandler(true, event.code, event.repeat) );
 document.addEventListener("keyup", (event) => keyHandler(false, event.code, event.repeat) );
+
+///// rendering /////////////
+
+socket.on('gameState', (data) => {
+	console.log(data);
+	for (var i=0;i < data.length; i++) {
+		console.log(data[i].x, data[i].y);
+		if ( data[i].shape === "square" ) {
+			gameview.fillStyle = "rgb(200, 0, 0)";
+         	gameview.fillRect(data[i].x, data[i].y, 50, 50);
+		}
+	}
+});
+
+socket.on("*",function(event,data) {
+    console.log(event);
+    console.log(data);
+});

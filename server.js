@@ -63,8 +63,8 @@ io.on('connection', (socket) => {
 
   socket.on('keystate', (data) => {
     users[socket.id].keystates = data;
-    console.log(users[socket.id].nickname, users[socket.id].keystates);
-  })
+    //console.log(users[socket.id].nickname, users[socket.id].keystates);
+  });
 
   socket.on('disconnect', () => {
     console.log(`User disconnected with socket ID: ` + socket.id);
@@ -72,3 +72,62 @@ io.on('connection', (socket) => {
     //console.log(users);
   });
 });
+
+///// GAME LOOP //////////
+
+let gameState = 1;
+
+function gameLoop () {
+  let mapObjects = [];
+  
+
+  for (var id in users) {
+    move(id);
+
+    mapObjects.push({
+      shape: "square",
+      x: users[id].x,
+      y: users[id].y
+    });
+  }
+
+  io.emit('gameState', mapObjects);
+  setTimeout(() => {
+  gameLoop();
+}, 50);
+}
+
+setTimeout(() => {
+  gameLoop();
+}, 50);
+
+
+///// GAME FUNCTIONS //////////////
+function move (id) {
+  //console.log("player data: ", id);
+  //console.log(users[id].keystates);
+  if (users[id].keystates.up) {
+    users[id].dy = Math.min(users[id].dy - 1, 10);
+  }
+  if (users[id].keystates.down) {
+    users[id].dy = Math.min(users[id].dy + 1, 10);
+  }
+  if (!users[id].keystates.up && !users[id].keystates.down) {
+    let t = -Math.sign(users[id].dy);
+    users[id].dy += t;
+  }
+
+  if (users[id].keystates.right) {
+    users[id].dx = Math.min(users[id].dx + 1, 10);
+  }
+  if (users[id].keystates.left) {
+    users[id].dx = Math.min(users[id].dx - 1, 10);
+  }
+  if (!users[id].keystates.right && !users[id].keystates.left) {
+    let t = -Math.sign(users[id].dx);
+    users[id].dx += t;
+  }
+
+  users[id].x += users[id].dx;
+  users[id].y += users[id].dy;
+}
