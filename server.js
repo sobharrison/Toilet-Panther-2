@@ -85,7 +85,8 @@ function gameLoop () {
   
 
   for (var id in users) {
-    move(id);
+    //move(id);
+    users[id].move();
 
     mapObjects.push({
       shape: "square",
@@ -106,33 +107,31 @@ setTimeout(() => {
 
 
 ///// GAME FUNCTIONS //////////////
-function move (id) {
-  //console.log("player data: ", id);
-  //console.log(users[id].keystates);
-  if (users[id].keystates.up) {
-    users[id].dy = Math.min(users[id].dy - 1, 10);
+User.prototype.move = function () {
+  if (this.keystates.up) {
+    this.dy = Math.min(this.dy - 1, 20);
   }
-  if (users[id].keystates.down) {
-    users[id].dy = Math.min(users[id].dy + 1, 10);
+  if (this.keystates.down) {
+    this.dy = Math.min(this.dy + 1, 20);
   }
-  if (!users[id].keystates.up && !users[id].keystates.down) {
-    let t = -Math.sign(users[id].dy);
-    users[id].dy += t;
+  if (!this.keystates.up && !this.keystates.down) {
+    let t = -Math.sign(this.dy);
+    this.dy += t;
   }
 
-  if (users[id].keystates.right) {
-    users[id].dx = Math.min(users[id].dx + 1, 10);
+  if (this.keystates.right) {
+    this.dx = Math.min(this.dx + 1, 20);
   }
-  if (users[id].keystates.left) {
-    users[id].dx = Math.min(users[id].dx - 1, 10);
+  if (this.keystates.left) {
+    this.dx = Math.min(this.dx - 1, 20);
   }
-  if (!users[id].keystates.right && !users[id].keystates.left) {
-    let t = -Math.sign(users[id].dx);
-    users[id].dx += t;
+  if (!this.keystates.right && !this.keystates.left) {
+    let t = -Math.sign(this.dx);
+    this.dx += t;
   }
 
-  //users[id].x += users[id].dx;
-  //users[id].y += users[id].dy;
-  users[id].x = Math.max(0, Math.min(users[id].x + users[id].dx, mapWidth) );
-  users[id].y = Math.max(0, Math.min(users[id].y + users[id].dy, mapHeight) );
+  //this.x += this.dx;
+  //this.y += this.dy;
+  this.x = Math.max(0, Math.min(this.x + this.dx, mapWidth) );
+  this.y = Math.max(0, Math.min(this.y + this.dy, mapHeight) );
 }
