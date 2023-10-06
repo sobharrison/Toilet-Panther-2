@@ -75,6 +75,9 @@ io.on('connection', (socket) => {
 
 ///// GAME LOOP //////////
 
+const mapWidth = 900;
+const mapHeight = 900;
+const gameSpeed = 50;
 let gameState = 1;
 
 function gameLoop () {
@@ -94,12 +97,12 @@ function gameLoop () {
   io.emit('gameState', mapObjects);
   setTimeout(() => {
   gameLoop();
-}, 50);
+}, gameSpeed);
 }
 
 setTimeout(() => {
   gameLoop();
-}, 50);
+}, 1000);
 
 
 ///// GAME FUNCTIONS //////////////
@@ -128,6 +131,8 @@ function move (id) {
     users[id].dx += t;
   }
 
-  users[id].x += users[id].dx;
-  users[id].y += users[id].dy;
+  //users[id].x += users[id].dx;
+  //users[id].y += users[id].dy;
+  users[id].x = Math.max(0, Math.min(users[id].x + users[id].dx, mapWidth) );
+  users[id].y = Math.max(0, Math.min(users[id].y + users[id].dy, mapHeight) );
 }
