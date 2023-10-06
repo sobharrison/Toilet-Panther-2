@@ -8,6 +8,12 @@ socket.emit('nickname', nickname);
 const c = document.getElementById("gameCanvas");
 const gameview = c.getContext("2d");
 
+const cHeight = c.height;
+const cWidth = c.width;
+
+const gameBackgroundImage = new Image();
+gameBackgroundImage.src = "/assets/map/futuristic.svg";
+
 ///// Keyboard input //////////
 
 var keystates = {
@@ -53,6 +59,7 @@ document.addEventListener("keyup", (event) => keyHandler(false, event.code, even
 ///// rendering /////////////
 
 socket.on('gameState', (data) => {
+	gameview.drawImage(gameBackgroundImage, 0, 0, cWidth, cHeight);
 	console.log(data);
 	for (var i=0;i < data.length; i++) {
 		console.log(data[i].x, data[i].y);
