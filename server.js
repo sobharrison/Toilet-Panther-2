@@ -96,7 +96,7 @@ class Plunger {
     this.h = plungerSize
   }
   spawn(max) {
-    return Math.floor(Math.random() * max - plungerSize);
+    return Math.max(Math.floor(Math.random() * max - plungerSize), 0);
   }
 }
 
@@ -175,8 +175,8 @@ User.prototype.move = function () {
 
   //this.x += this.dx;
   //this.y += this.dy;
-  this.x = Math.max(0, Math.min(this.x + this.dx, mapWidth) );
-  this.y = Math.max(0, Math.min(this.y + this.dy, mapHeight) );
+  this.x = Math.max(0, Math.min(this.x + this.dx, mapWidth - this.w) );
+  this.y = Math.max(0, Math.min(this.y + this.dy, mapHeight - this.h) );
 }
 
 // objects must have the properties x,y,w,h for size and position
