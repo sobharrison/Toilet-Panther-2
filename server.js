@@ -1,3 +1,5 @@
+"use strict";
+
 const express = require('express');
 const http = require('http');
 const socketio = require('socket.io');
@@ -83,29 +85,50 @@ const mapHeight = 900;
 const gameSpeed = 50;
 let gameState = 1;
 
-let plunger = {
-  shape: "plunger",
-  x: 100,
-  y: 200,
-  w: 40,
-  h: 40
-};
+const plungerSize = 50;
+const maxPlungers = 10;
+class Plunger {
+  constructor() {
+    this.sprite = "plunger",
+    this.x = this.spawn(mapWidth),
+    this.y = this.spawn(mapHeight),
+    this.w = plungerSize,
+    this.h = plungerSize
+  }
+  spawn(max) {
+    return Math.floor(Math.random() * max - plungerSize);
+  }
+}
+
+var plungers = [];
+
 
 function gameLoop () {
   let mapObjects = [];
   
+  if (plungers.length < maxPlungers) {
+    plungers.push(new Plunger());
+  }
 
   for (var id in users) {
     //move(id);
     users[id].move();
 
-    let shape = "square";
-    if ( collision(users[id], plunger) ) {
-      //console.log("hit");
-      shape = "squareb";
+    let sprite = "square";//temperary
+
+    // plungers
+    for (var p=0;p < plungers.length; p++) {
+      if ( collision(users[id], plungers[p]) ) {
+        users[id].ammo += 1;
+        //console.log(users[id].nickname, users[id].ammo);
+        sprite = "squareb"; // temporary
+        plungers.splice(p, 1);
+        p--;
+      }
     }
+    
     mapObjects.push({
-      shape: shape,
+      sprite: sprite,
       x: users[id].x,
       y: users[id].y,
       w: users[id].w,
@@ -113,7 +136,7 @@ function gameLoop () {
     });
   }
 
-  mapObjects.push(plunger);
+  mapObjects = mapObjects.concat(plungers);
 
   io.emit('gameState', mapObjects);
   setTimeout(() => {

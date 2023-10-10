@@ -66,13 +66,13 @@ socket.on('gameState', (data) => {
 	console.log(data);
 	for (var i=0;i < data.length; i++) {
 		console.log(data[i].x, data[i].y);
-		if ( data[i].shape === "square" ) {
+		if ( data[i].sprite === "square" ) {
 			gameview.fillStyle = "rgb(200, 0, 0)";
          	gameview.fillRect(data[i].x, data[i].y, data[i].w, data[i].h);
-		} else if ( data[i].shape === "squareb" ) {
+		} else if ( data[i].sprite === "squareb" ) {
 			gameview.fillStyle = "rgb(0, 50, 200)";
          	gameview.fillRect(data[i].x, data[i].y, data[i].w, data[i].h);
-		} else if ( data[i].shape === "plunger" ) {
+		} else if ( data[i].sprite === "plunger" ) {
 			gameview.drawImage(plunger, data[i].x, data[i].y, data[i].w, data[i].h);
 		}
 	}
