@@ -25,6 +25,7 @@ server.listen(port, () => {
 ///// Socket IO ////////////////////////////////////////
 
 const DEFAULT_AMMO = 3;
+const PLAYER_SIZE = 45;
 
 class User {
   constructor(id) {
@@ -36,6 +37,8 @@ class User {
     this.y = 0; // position y
     this.dx = 0; // velocity x
     this.dy = 0; // velocity y
+    this.w = PLAYER_SIZE; // width (x)
+    this.h = PLAYER_SIZE; // height (h)
     this.keystates = {
       "up": false,
       "down": false,
@@ -80,6 +83,14 @@ const mapHeight = 900;
 const gameSpeed = 50;
 let gameState = 1;
 
+let plunger = {
+  shape: "plunger",
+  x: 100,
+  y: 200,
+  w: 40,
+  h: 40
+};
+
 function gameLoop () {
   let mapObjects = [];
   
@@ -88,12 +99,21 @@ function gameLoop () {
     //move(id);
     users[id].move();
 
+    let shape = "square";
+    if ( collision(users[id], plunger) ) {
+      //console.log("hit");
+      shape = "squareb";
+    }
     mapObjects.push({
-      shape: "square",
+      shape: shape,
       x: users[id].x,
-      y: users[id].y
+      y: users[id].y,
+      w: users[id].w,
+      h: users[id].h
     });
   }
+
+  mapObjects.push(plunger);
 
   io.emit('gameState', mapObjects);
   setTimeout(() => {
@@ -134,4 +154,19 @@ User.prototype.move = function () {
   //this.y += this.dy;
   this.x = Math.max(0, Math.min(this.x + this.dx, mapWidth) );
   this.y = Math.max(0, Math.min(this.y + this.dy, mapHeight) );
+}
+
+// objects must have the properties x,y,w,h for size and position
+function collision (object1, object2) {
+  // https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection
+  if (
+    object1.x < object2.x + object2.w &&
+    object1.x + object1.w > object2.x &&
+    object1.y < object2.y + object2.h &&
+    object1.y + object1.h > object2.y
+  ) {
+    return true;
+  } else {
+    return false;
+  }
 }

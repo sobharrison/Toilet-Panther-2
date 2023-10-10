@@ -14,6 +14,9 @@ const cWidth = c.width;
 const gameBackgroundImage = new Image();
 gameBackgroundImage.src = "/assets/map/futuristic.svg";
 
+const plunger = new Image();
+plunger.src = "/assets/sprites/plunger.svg";
+
 ///// Keyboard input //////////
 
 var keystates = {
@@ -65,7 +68,12 @@ socket.on('gameState', (data) => {
 		console.log(data[i].x, data[i].y);
 		if ( data[i].shape === "square" ) {
 			gameview.fillStyle = "rgb(200, 0, 0)";
-         	gameview.fillRect(data[i].x, data[i].y, 50, 50);
+         	gameview.fillRect(data[i].x, data[i].y, data[i].w, data[i].h);
+		} else if ( data[i].shape === "squareb" ) {
+			gameview.fillStyle = "rgb(0, 50, 200)";
+         	gameview.fillRect(data[i].x, data[i].y, data[i].w, data[i].h);
+		} else if ( data[i].shape === "plunger" ) {
+			gameview.drawImage(plunger, data[i].x, data[i].y, data[i].w, data[i].h);
 		}
 	}
 });
