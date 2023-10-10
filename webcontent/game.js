@@ -72,6 +72,15 @@ socket.on('gameState', (data) => {
 		} else if ( data[i].sprite === "squareb" ) {
 			gameview.fillStyle = "rgb(0, 50, 200)";
          	gameview.fillRect(data[i].x, data[i].y, data[i].w, data[i].h);
+		} else if ( data[i].sprite === "squareg" ) {
+			gameview.fillStyle = "rgb(50, 200, 50)";
+         	gameview.fillRect(data[i].x, data[i].y, data[i].w, data[i].h);
+		} else if ( data[i].sprite === "ooze" ) {
+			gameview.fillStyle = "rgb(100, 255, 100)";
+         	gameview.fillRect(data[i].x, data[i].y, data[i].w, data[i].h);
+		} else if ( data[i].sprite === "gooze" ) {
+			gameview.fillStyle = "rgb(150, 255, 150)";
+         	gameview.fillRect(data[i].x, data[i].y, data[i].w, data[i].h);
 		} else if ( data[i].sprite === "plunger" ) {
 			gameview.drawImage(plunger, data[i].x, data[i].y, data[i].w, data[i].h);
 		}
