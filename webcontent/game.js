@@ -63,9 +63,9 @@ document.addEventListener("keyup", (event) => keyHandler(false, event.code, even
 
 socket.on('gameState', (data) => {
 	gameview.drawImage(gameBackgroundImage, 0, 0, cWidth, cHeight);
-	console.log(data);
+	//console.log(data);
 	for (var i=0;i < data.length; i++) {
-		console.log(data[i].x, data[i].y);
+		//console.log(data[i].x, data[i].y);
 		if ( data[i].sprite === "square" ) {
 			gameview.fillStyle = "rgb(200, 0, 0)";
          	gameview.fillRect(data[i].x, data[i].y, data[i].w, data[i].h);
@@ -83,6 +83,18 @@ socket.on('gameState', (data) => {
          	gameview.fillRect(data[i].x, data[i].y, data[i].w, data[i].h);
 		} else if ( data[i].sprite === "plunger" ) {
 			gameview.drawImage(plunger, data[i].x, data[i].y, data[i].w, data[i].h);
+		} else if ( data[i].you ) {
+			// render your sprite
+			gameview.fillStyle = "rgb(250, 200, 0)";
+			gameview.fillRect(data[i].x, data[i].y, data[i].w, data[i].h);
+			// render a ui
+			gameview.font = "15px MS Gothic";
+			gameview.fillStyle = "rgb(0, 0, 0)";
+			gameview.fillText(
+				"Name: "+data[i].nickname+
+				"\nPoints: "+data[i].points+
+				"\nAmmo: "+data[i].ammo , 20, 20
+			);
 		}
 	}
 });

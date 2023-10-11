@@ -221,18 +221,37 @@ function gameLoop () {
   mapObjects = mapObjects.concat(plungers);
   mapObjects = mapObjects.concat(oozes);
 
-  io.emit('gameState', mapObjects);
+  //io.emit('gameState', mapObjects);
+
+  for (var id in users) {
+    let gameData = mapObjects.concat( users[id].clientData() );
+    io.to(id).emit('gameState', gameData);
+  }
+
   setTimeout(() => {
-  gameLoop();
-}, gameSpeed);
+    gameLoop();
+  }, gameSpeed);
 }
 
 setTimeout(() => {
   gameLoop();
 }, 1000);
 
-
 ///// GAME FUNCTIONS //////////////
+User.prototype.clientData = function () {
+  return {
+    you: true,
+    nickname: this.nickname,
+    sprite: "you",
+    points: this.points,
+    ammo: this.ammo,
+    x: this.x,
+    y: this.y,
+    w: this.w,
+    h: this.h
+  };
+}
+
 User.prototype.move = function () {
   if (this.keystates.up) {
     this.dy = Math.min(this.dy - 1, 20);
