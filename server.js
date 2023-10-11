@@ -33,6 +33,7 @@ class User {
   constructor(id) {
     this.id = id;
     this.nickname = null;
+    this.sprite = "square";
     this.points = 0;
     this.ammo = DEFAULT_AMMO;
     this.x = 0; // position x
@@ -182,14 +183,14 @@ function gameLoop () {
     //move(id);
     users[id].move();
 
-    let sprite = "square";//temperary
+    users[id].sprite = "square";//temperary
 
     // plungers
     for (var p=0;p < plungers.length; p++) {
       if ( collision(users[id], plungers[p]) ) {
         users[id].ammo += 1;
         //console.log(users[id].nickname, users[id].ammo);
-        sprite = "squareb"; // temporary
+        users[id].sprite = "squareb"; // temporary
         plungers.splice(p, 1);
         p--;
       }
@@ -200,17 +201,17 @@ function gameLoop () {
         if ( users[id].ammo >= 1 ) {
           users[id].points += oozes[o].points;
           users[id].ammo -= 1;
-          sprite = "squareg";
+          users[id].sprite = "squareg";
           oozes.splice(o, 1);
           o--;
         } else {
-          sprite = "squareg";
+          users[id].sprite = "squareg";
         }
       }
     }
     
     mapObjects.push({
-      sprite: sprite,
+      sprite: users[id].sprite,
       x: users[id].x,
       y: users[id].y,
       w: users[id].w,
@@ -242,7 +243,7 @@ User.prototype.clientData = function () {
   return {
     you: true,
     nickname: this.nickname,
-    sprite: "you",
+    sprite: (this.sprite === "square" ? "you" : this.sprite),
     points: this.points,
     ammo: this.ammo,
     x: this.x,

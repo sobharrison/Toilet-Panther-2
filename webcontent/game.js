@@ -83,10 +83,13 @@ socket.on('gameState', (data) => {
          	gameview.fillRect(data[i].x, data[i].y, data[i].w, data[i].h);
 		} else if ( data[i].sprite === "plunger" ) {
 			gameview.drawImage(plunger, data[i].x, data[i].y, data[i].w, data[i].h);
-		} else if ( data[i].you ) {
+		}
+		if ( data[i].you ) {
 			// render your sprite
-			gameview.fillStyle = "rgb(250, 200, 0)";
-			gameview.fillRect(data[i].x, data[i].y, data[i].w, data[i].h);
+			if (data[i].sprite === "you") {
+				gameview.fillStyle = "rgb(250, 200, 0)";
+				gameview.fillRect(data[i].x, data[i].y, data[i].w, data[i].h);
+			} else {}
 			// render a ui
 			gameview.font = "15px MS Gothic";
 			gameview.fillStyle = "rgb(0, 0, 0)";
