@@ -209,6 +209,16 @@ function gameLoop () {
         }
       }
     }
+    // player collision
+    for (var iden in users) {
+      if (id === iden) {
+        continue;
+      }
+      if ( collision(users[id], users[iden]) ) {
+        console.log(id, getCenter(users[id]));
+        console.log(iden, getCenter(users[iden]));
+      }
+    }
     
     mapObjects.push({
       sprite: users[id].sprite,
@@ -308,4 +318,12 @@ function outOfBounds (object1) {
   } else {
     return false;
   }
+}
+
+// object must have x,y,w,h to find center
+function getCenter (object) {
+  return {
+    x: object.x + Math.floor(object.w / 2),
+    y: object.y + Math.floor(object.h / 2),
+  };
 }
