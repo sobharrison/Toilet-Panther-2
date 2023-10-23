@@ -215,8 +215,7 @@ function gameLoop () {
         continue;
       }
       if ( collision(users[id], users[iden]) ) {
-        console.log(id, getCenter(users[id]));
-        console.log(iden, getCenter(users[iden]));
+        PhysicsBumperCar(users[id], users[iden]);
       }
     }
     
@@ -366,9 +365,32 @@ function outOfBounds (object1) {
 }
 
 // object must have x,y,w,h to find center
-function getCenter (object) {
+function getCenter (object1) {
   return {
-    x: object.x + Math.floor(object.w / 2),
-    y: object.y + Math.floor(object.h / 2),
+    x: object1.x + Math.floor(object1.w / 2),
+    y: object1.y + Math.floor(object1.h / 2),
   };
+}
+
+// get angle between 2 object's center points
+// angle is perspective to object 1
+// (do negative -(value) to get other perspective)
+function getAngle (object1, object2) {
+  let obj1center = getCenter(object1);
+  let obj2center = getCenter(object2);
+  let rise = obj2center.y - obj1center.y;
+  let run = obj2center.x - obj1center.x;
+  return {
+    rise: rise,
+    run: run
+  };
+}
+
+// bumper car physics for objects
+// perspective to object 1
+const BUMPER_MULTIPLIER = 0.325;
+function PhysicsBumperCar (object1, object2) {
+  let angle = getAngle(object1, object2);
+  object1.dy += Math.floor(-angle.rise * BUMPER_MULTIPLIER);
+  object1.dx += Math.floor(-angle.run * BUMPER_MULTIPLIER);
 }
