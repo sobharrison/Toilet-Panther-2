@@ -65,6 +65,7 @@ io.on('connection', (socket) => {
   socket.on('nickname', (data) => {
     users[socket.id].nickname = data;
     console.log('User: '+socket.id+' set nickname: '+data);
+    users[socket.id].spawnCircle();
   });
 
   socket.on('keystate', (data) => {
@@ -309,6 +310,8 @@ User.prototype.move = function () {
     this.DXretrograde();
   }
 
+  this.dy = Math.floor(this.dy);
+  this.dx = Math.floor(this.dx);
   //this.x += this.dx;
   //this.y += this.dy;
   this.x = Math.max(0, Math.min(this.x + this.dx, mapWidth - this.w) );
@@ -334,6 +337,14 @@ User.prototype.DXretrograde = function() {
   } else {
     this.dx += t;
   }
+}
+
+// randomized player spawn positions
+const PLAYER_SPAWN_RADIUS = 300;
+User.prototype.spawnCircle = function () {
+  let angle = Math.random() * 2 * Math.PI;
+  this.y = Math.floor(mapHeight / 2) + PLAYER_SPAWN_RADIUS * Math.sin(angle);
+  this.x = Math.floor(mapWidth / 2) + PLAYER_SPAWN_RADIUS * Math.cos(angle);
 }
 
 // objects must have the properties x,y,w,h for size and position
