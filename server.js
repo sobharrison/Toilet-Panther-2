@@ -263,33 +263,78 @@ User.prototype.clientData = function () {
   };
 }
 
+const PLAYER_DV_MAX = 20;
+const PLAYER_ACCEL_DV = 2;
+const PLAYER_DECCEL_DV = 1;
 User.prototype.move = function () {
+  // up
   if (this.keystates.up) {
-    this.dy = Math.min(this.dy - 1, 20);
+    if (this.dy < -PLAYER_DV_MAX) {
+      this.DYretrograde();
+    } else {
+      this.dy = this.dy - PLAYER_ACCEL_DV;
+    }
   }
+  // down
   if (this.keystates.down) {
-    this.dy = Math.min(this.dy + 1, 20);
+    if (this.dy > PLAYER_DV_MAX) {
+      this.DYretrograde();
+    } else {
+      this.dy = this.dy + PLAYER_ACCEL_DV;
+    }
   }
+  // no up / down
   if (!this.keystates.up && !this.keystates.down) {
-    let t = -Math.sign(this.dy);
-    this.dy += t;
+    this.DYretrograde();
   }
 
+  // right
   if (this.keystates.right) {
-    this.dx = Math.min(this.dx + 1, 20);
+    if (this.dx > PLAYER_DV_MAX) {
+      this.DXretrograde();
+    } else {
+      this.dx = this.dx + PLAYER_ACCEL_DV;
+    }
+    
   }
+  // left
   if (this.keystates.left) {
-    this.dx = Math.min(this.dx - 1, 20);
+    if (this.dx < -PLAYER_DV_MAX) {
+      this.DXretrograde();
+    } else {
+      this.dx = this.dx - PLAYER_ACCEL_DV;
+    }
   }
+  // no right / left
   if (!this.keystates.right && !this.keystates.left) {
-    let t = -Math.sign(this.dx);
-    this.dx += t;
+    this.DXretrograde();
   }
 
   //this.x += this.dx;
   //this.y += this.dy;
   this.x = Math.max(0, Math.min(this.x + this.dx, mapWidth - this.w) );
   this.y = Math.max(0, Math.min(this.y + this.dy, mapHeight - this.h) );
+}
+
+User.prototype.DYretrograde = function() {
+  let t = -Math.sign(this.dy);
+  if (Math.abs(this.dy) > PLAYER_DV_MAX) {
+    this.dy += t * 2 * PLAYER_DECCEL_DV;
+  } else if (Math.abs(this.dy) > (PLAYER_DV_MAX / 2)) {
+    this.dy += t * PLAYER_DECCEL_DV;
+  } else {
+    this.dy += t;
+  }
+}
+User.prototype.DXretrograde = function() {
+  let t = -Math.sign(this.dx);
+  if (Math.abs(this.dx) > PLAYER_DV_MAX) {
+    this.dx += t * 2 * PLAYER_DECCEL_DV;
+  } else if (Math.abs(this.dx) > (PLAYER_DV_MAX / 2)) {
+    this.dx += t * PLAYER_DECCEL_DV;
+  } else {
+    this.dx += t;
+  }
 }
 
 // objects must have the properties x,y,w,h for size and position
