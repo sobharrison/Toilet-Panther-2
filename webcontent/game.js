@@ -69,8 +69,6 @@ document.addEventListener("keyup", (event) => keyHandler(false, event.code, even
 ///// rendering /////////////
 
 socket.on('pregame', (data) => {
-	gameview.drawImage(gameBackgroundImage, 0, 0, cWidth, cHeight);
-	
 	gameview.fillStyle = "#333333";
  	gameview.fillRect(0, 0, 900, 900);
 	gameview.font = "48px Comic Sans MS";
@@ -85,7 +83,24 @@ socket.on('pregame', (data) => {
 			300, 200
 		);
 	}
-}); 
+});
+
+socket.on('endgame', (data) => {
+	gameview.fillStyle = "#333333";
+ 	gameview.fillRect(0, 0, 900, 900);
+	gameview.font = "24px Comic Sans MS";
+	gameview.fillStyle = "#f39c12";
+	gameview.fillText("<-- Press Start to begin a new game!", 30, 30);
+	gameview.fillText("Leaderboard:", 30, 90);
+
+	gameview.font = "20px Comic Sans MS";
+	for (var i=0;i < data.length; i++) {
+		gameview.fillText(
+			data[i].points+
+			" : "+
+			data[i].nickname, 30, (114+24*i));
+	}
+});
 
 socket.on('gameState', (data) => {
 	gameview.drawImage(gameBackgroundImage, 0, 0, cWidth, cHeight);

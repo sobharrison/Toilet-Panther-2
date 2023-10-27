@@ -186,6 +186,9 @@ function startSequence () {
   if (countdown < 1) {
     gameState = 1;
     countdown = startCountDown;
+    setTimeout(() => {
+      endSequence();
+    }, 60000);
     gameLoop();
   } else {
     countdown--;
@@ -195,10 +198,32 @@ function startSequence () {
   }
 }
 
+///// GAME END SEQUENCE //////
+
+function endSequence () {
+  let leaderboard = [];
+  for (var id in users) {
+    leaderboard.push({
+      "nickname": users[id].nickname,
+      "points": users[id].points
+    });
+    users[id].reset();
+  }
+
+  leaderboard.sort(function(a,b) {
+    return b.points - a.points;
+  });
+  io.emit('endgame', leaderboard);
+  gameState = 0;
+}
+
 
 ///// GAME LOOP //////////
 
 function gameLoop () {
+  if (gameState === 0) {
+    return;
+  }
   let mapObjects = [];
   
   if (plungers.length < maxPlungers) {
@@ -438,4 +463,13 @@ function PhysicsBumperCar (object1, object2) {
   let angle = getAngle(object1, object2);
   object1.dy += Math.floor(-angle.rise * BUMPER_MULTIPLIER);
   object1.dx += Math.floor(-angle.run * BUMPER_MULTIPLIER);
+}
+
+// reset player stats
+User.prototype.reset = function() {
+  this.spawnCircle();
+  this.points = 0;
+  this.ammo = DEFAULT_AMMO;
+  this.dx = 0; // velocity x
+  this.dy = 0; // velocity y
 }
