@@ -66,6 +66,10 @@ io.on('connection', (socket) => {
     users[socket.id].nickname = data;
     console.log('User: '+socket.id+' set nickname: '+data);
     users[socket.id].spawnCircle();
+    io.to(socket.id).emit('pregame', {
+      "text": "<-- Press Start button!",
+      "nickname": data
+    });
   });
 
   socket.on('keystate', (data) => {

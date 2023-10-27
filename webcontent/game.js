@@ -68,6 +68,20 @@ document.addEventListener("keyup", (event) => keyHandler(false, event.code, even
 
 ///// rendering /////////////
 
+socket.on('pregame', (data) => {
+	gameview.drawImage(gameBackgroundImage, 0, 0, cWidth, cHeight);
+	gameview.font = "48px Comic Sans MS";
+	gameview.fillStyle = "#f39c12";
+	gameview.fillText(
+		data.text , 200, 400
+	);
+	gameview.font = "28px Comic Sans MS";
+	gameview.fillText(
+		"Nickname: "+data.nickname,
+		300, 200
+	);
+}); 
+
 socket.on('gameState', (data) => {
 	gameview.drawImage(gameBackgroundImage, 0, 0, cWidth, cHeight);
 	//console.log(data);
