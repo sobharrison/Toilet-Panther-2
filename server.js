@@ -78,6 +78,15 @@ io.on('connection', (socket) => {
     delete users[socket.id];
     //console.log(users);
   });
+
+  socket.on('start', () => {
+    if (gameState === 0) {
+      gameState = 1;
+      setTimeout(() => {
+        gameLoop();
+      }, 1000);
+    }
+  });
 });
 
 ///// GAME OBJECTS //////////
@@ -85,7 +94,7 @@ io.on('connection', (socket) => {
 const mapWidth = 900;
 const mapHeight = 900;
 const gameSpeed = 50;
-let gameState = 1;
+let gameState = 0;
 
 const plungerSize = 50;
 const maxPlungers = 10;
@@ -244,9 +253,6 @@ function gameLoop () {
   }, gameSpeed);
 }
 
-setTimeout(() => {
-  gameLoop();
-}, 1000);
 
 ///// GAME FUNCTIONS //////////////
 User.prototype.clientData = function () {

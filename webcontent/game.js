@@ -17,6 +17,13 @@ gameBackgroundImage.src = "/assets/map/futuristic.svg";
 const plunger = new Image();
 plunger.src = "/assets/sprites/plunger.svg";
 
+///// Start Button ///////////
+
+function start() {
+	socket.emit('start');
+}
+
+
 ///// Keyboard input //////////
 
 var keystates = {
