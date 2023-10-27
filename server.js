@@ -86,8 +86,9 @@ io.on('connection', (socket) => {
   socket.on('start', () => {
     if (gameState === 0) {
       gameState = 1;
+      countdown = startCountDown;
       setTimeout(() => {
-        gameLoop();
+        startSequence();
       }, 1000);
     }
   });
@@ -171,6 +172,29 @@ class Ooze {
 }
 
 var oozes = [];
+
+///// GAME START SEQUENCE //////
+
+const startCountDown = 20;
+let countdown = startCountDown;
+
+function startSequence () {
+  io.emit('pregame', {
+    "text": "Start: "+countdown
+  });
+  
+  if (countdown < 1) {
+    gameState = 1;
+    countdown = startCountDown;
+    gameLoop();
+  } else {
+    countdown--;
+    setTimeout(() => {
+      startSequence();
+    }, 1000);
+  }
+}
+
 
 ///// GAME LOOP //////////
 
