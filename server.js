@@ -237,6 +237,9 @@ function endSequence () {
     });
     users[id].reset();
   }
+  
+  plungers = [];
+  oozes = [];
 
   leaderboard.sort(function(a,b) {
     return b.points - a.points;
