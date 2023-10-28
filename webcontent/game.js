@@ -24,6 +24,12 @@ ooze.src = "/assets/sprites/ooze.svg";
 const gooze = new Image();
 gooze.src = "/assets/sprites/gooze.svg";
 
+const panther = new Image();
+panther.src = "/assets/sprites/panther.svg";
+
+const youPanther = new Image();
+youPanther.src = "/assets/sprites/you_panther.svg";
+
 ///// Start Button ///////////
 
 function start() {
@@ -114,16 +120,13 @@ socket.on('gameState', (data) => {
 	//console.log(data);
 	for (var i=0;i < data.length; i++) {
 		//console.log(data[i].x, data[i].y);
-		if ( data[i].sprite === "square" ) {
-			gameview.fillStyle = "rgb(200, 0, 0)";
-         	gameview.fillRect(data[i].x, data[i].y, data[i].w, data[i].h);
-		} else if ( data[i].sprite === "squareb" ) {
-			gameview.fillStyle = "rgb(0, 50, 200)";
-         	gameview.fillRect(data[i].x, data[i].y, data[i].w, data[i].h);
+		if ( data[i].sprite === "panther" ) {
+			gameview.drawImage(panther, data[i].x, data[i].y, data[i].w, data[i].h);
+		}/* else if ( data[i].sprite === "squareb" ) {
+			gameview.drawImage(panther, data[i].x, data[i].y, data[i].w, data[i].h);
 		} else if ( data[i].sprite === "squareg" ) {
-			gameview.fillStyle = "rgb(50, 200, 50)";
-         	gameview.fillRect(data[i].x, data[i].y, data[i].w, data[i].h);
-		} else if ( data[i].sprite === "ooze" ) {
+			gameview.drawImage(panther, data[i].x, data[i].y, data[i].w, data[i].h);
+		}*/ else if ( data[i].sprite === "ooze" ) {
          	gameview.drawImage(ooze, data[i].x, data[i].y, data[i].w, data[i].h);
 		} else if ( data[i].sprite === "gooze" ) {
 			gameview.drawImage(gooze, data[i].x, data[i].y, data[i].w, data[i].h);
@@ -133,8 +136,7 @@ socket.on('gameState', (data) => {
 		if ( data[i].you ) {
 			// render your sprite
 			if (data[i].sprite === "you") {
-				gameview.fillStyle = "rgb(250, 200, 0)";
-				gameview.fillRect(data[i].x, data[i].y, data[i].w, data[i].h);
+				gameview.drawImage(youPanther, data[i].x, data[i].y, data[i].w, data[i].h);
 			} else {}
 			// render a ui
 			gameview.font = "15px MS Gothic";

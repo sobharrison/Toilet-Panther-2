@@ -27,13 +27,13 @@ server.listen(port, () => {
 ///// Socket IO ////////////////////////////////////////
 
 const DEFAULT_AMMO = 3;
-const PLAYER_SIZE = 45;
+const PLAYER_SIZE = 60;
 
 class User {
   constructor(id) {
     this.id = id;
     this.nickname = null;
-    this.sprite = "square";
+    this.sprite = "panther";
     this.points = 0;
     this.ammo = DEFAULT_AMMO;
     this.x = 0; // position x
@@ -246,14 +246,14 @@ function gameLoop () {
     //move(id);
     users[id].move();
 
-    users[id].sprite = "square";//temperary
+    users[id].sprite = "panther";//temperary
 
     // plungers
     for (var p=0;p < plungers.length; p++) {
       if ( collision(users[id], plungers[p]) ) {
         users[id].ammo += 1;
         //console.log(users[id].nickname, users[id].ammo);
-        users[id].sprite = "squareb"; // temporary
+        //users[id].sprite = "squareb"; // temporary
         plungers.splice(p, 1);
         p--;
       }
@@ -264,11 +264,11 @@ function gameLoop () {
         if ( users[id].ammo >= 1 ) {
           users[id].points += oozes[o].points;
           users[id].ammo -= 1;
-          users[id].sprite = "squareg";
+          //users[id].sprite = "squareg";
           oozes.splice(o, 1);
           o--;
         } else {
-          users[id].sprite = "squareg";
+          //users[id].sprite = "squareg";
         }
       }
     }
@@ -287,7 +287,9 @@ function gameLoop () {
       x: users[id].x,
       y: users[id].y,
       w: users[id].w,
-      h: users[id].h
+      h: users[id].h,
+      dx: users[id].dx,
+      dy: users[id].dy
     });
   }
 
@@ -312,13 +314,15 @@ User.prototype.clientData = function () {
   return {
     you: true,
     nickname: this.nickname,
-    sprite: (this.sprite === "square" ? "you" : this.sprite),
+    sprite: (this.sprite === "panther" ? "you" : this.sprite),
     points: this.points,
     ammo: this.ammo,
     x: this.x,
     y: this.y,
     w: this.w,
-    h: this.h
+    h: this.h,
+    dx: this.dx,
+    dy: this.dy
   };
 }
 
