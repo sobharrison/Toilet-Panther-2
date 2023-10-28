@@ -125,7 +125,7 @@ const oozeSpriteNormal = "ooze";
 const oozeSpriteBonus = "gooze";
 const oozeSize = 50;
 const oozeVelocityMax = 20;
-const maxOozes = 10;
+var maxOozes = 10;
 class Ooze {
   constructor() {
     this.sprite = oozeSpriteNormal,
@@ -173,6 +173,16 @@ class Ooze {
 
 var oozes = [];
 
+function oozeOverflow () {
+  if (gameState === 1) {
+    maxOozes += 3;
+
+    setTimeout(() => {
+      oozeOverflow();
+    }, 10000);
+  }
+}
+
 ///// GAME START SEQUENCE //////
 
 const startCountDown = 20;
@@ -185,11 +195,13 @@ function startSequence () {
   
   if (countdown < 1) {
     gameState = 1;
+    maxOozes = 3;
     countdown = startCountDown;
     setTimeout(() => {
       endSequence();
     }, 60000);
     gameLoop();
+    oozeOverflow();
   } else {
     countdown--;
     setTimeout(() => {
