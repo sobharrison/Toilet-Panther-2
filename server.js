@@ -255,7 +255,11 @@ function gameLoop () {
   let mapObjects = [];
   
   if (plungers.length < maxPlungers) {
-    plungers.push(new Plunger());
+    let freshPlunger = new Plunger();
+    while ( collision(freshPlunger, toilet) ) {
+      freshPlunger = new Plunger();
+    }
+    plungers.push(freshPlunger);
   }
 
   if (oozes.length < maxOozes) {
