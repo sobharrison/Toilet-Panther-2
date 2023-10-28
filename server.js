@@ -192,7 +192,7 @@ const toilet = {
   h: toiletSize
 }
 
-const BUMPER_TOILET = 0.5;
+const BUMPER_TOILET = 0.375;
 function PhysicsBumperCarToilet (object1, object2) {
   let angle = getAngle(object1, object2);
   object1.dy += Math.floor(-angle.rise * BUMPER_TOILET);
