@@ -11,11 +11,18 @@ const gameview = c.getContext("2d");
 const cHeight = c.height;
 const cWidth = c.width;
 
+////// Image Loading /////////////////
 const gameBackgroundImage = new Image();
 gameBackgroundImage.src = "/assets/map/tile_wet_floor.svg";
 
 const plunger = new Image();
 plunger.src = "/assets/sprites/plunger.svg";
+
+const ooze = new Image();
+ooze.src = "/assets/sprites/ooze.svg";
+
+const gooze = new Image();
+gooze.src = "/assets/sprites/gooze.svg";
 
 ///// Start Button ///////////
 
@@ -117,11 +124,9 @@ socket.on('gameState', (data) => {
 			gameview.fillStyle = "rgb(50, 200, 50)";
          	gameview.fillRect(data[i].x, data[i].y, data[i].w, data[i].h);
 		} else if ( data[i].sprite === "ooze" ) {
-			gameview.fillStyle = "rgb(100, 255, 100)";
-         	gameview.fillRect(data[i].x, data[i].y, data[i].w, data[i].h);
+         	gameview.drawImage(ooze, data[i].x, data[i].y, data[i].w, data[i].h);
 		} else if ( data[i].sprite === "gooze" ) {
-			gameview.fillStyle = "rgb(150, 255, 150)";
-         	gameview.fillRect(data[i].x, data[i].y, data[i].w, data[i].h);
+			gameview.drawImage(gooze, data[i].x, data[i].y, data[i].w, data[i].h);
 		} else if ( data[i].sprite === "plunger" ) {
 			gameview.drawImage(plunger, data[i].x, data[i].y, data[i].w, data[i].h);
 		}
