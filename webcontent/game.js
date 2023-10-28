@@ -12,7 +12,7 @@ const cHeight = c.height;
 const cWidth = c.width;
 
 const gameBackgroundImage = new Image();
-gameBackgroundImage.src = "/assets/map/futuristic.svg";
+gameBackgroundImage.src = "/assets/map/tile_wet_floor.svg";
 
 const plunger = new Image();
 plunger.src = "/assets/sprites/plunger.svg";
