@@ -30,6 +30,9 @@ panther.src = "/assets/sprites/panther.svg";
 const youPanther = new Image();
 youPanther.src = "/assets/sprites/you_panther.svg";
 
+const toiletOoze = new Image();
+toiletOoze.src = "/assets/sprites/ooze_toilet.svg";
+
 ///// Start Button ///////////
 
 function start() {
@@ -132,6 +135,8 @@ socket.on('gameState', (data) => {
 			gameview.drawImage(gooze, data[i].x, data[i].y, data[i].w, data[i].h);
 		} else if ( data[i].sprite === "plunger" ) {
 			gameview.drawImage(plunger, data[i].x, data[i].y, data[i].w, data[i].h);
+		} else if ( data[i].sprite === "toilet" ) {
+			gameview.drawImage(toiletOoze, data[i].x, data[i].y, data[i].w, data[i].h);
 		}
 		if ( data[i].you ) {
 			// render your sprite

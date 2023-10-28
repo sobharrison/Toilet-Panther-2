@@ -183,6 +183,22 @@ function oozeOverflow () {
   }
 }
 
+const toiletSize = 200;
+const toilet = {
+  sprite: "toilet",
+  x: Math.floor( (mapWidth / 2) - (toiletSize / 2) ),
+  y: Math.floor( (mapWidth / 2) - (toiletSize / 2) ),
+  w: toiletSize,
+  h: toiletSize
+}
+
+const BUMPER_TOILET = 0.5;
+function PhysicsBumperCarToilet (object1, object2) {
+  let angle = getAngle(object1, object2);
+  object1.dy += Math.floor(-angle.rise * BUMPER_TOILET);
+  object1.dx += Math.floor(-angle.run * BUMPER_TOILET);
+}
+
 ///// GAME START SEQUENCE //////
 
 const startCountDown = 20;
@@ -293,6 +309,10 @@ function gameLoop () {
         PhysicsBumperCar(users[id], users[iden]);
       }
     }
+
+    if ( collision(users[id], toilet) ) {
+      PhysicsBumperCarToilet(users[id], toilet);
+    }
     
     mapObjects.push({
       sprite: users[id].sprite,
@@ -307,6 +327,7 @@ function gameLoop () {
 
   mapObjects = mapObjects.concat(plungers);
   mapObjects = mapObjects.concat(oozes);
+  mapObjects.push(toilet);
 
   //io.emit('gameState', mapObjects);
 
