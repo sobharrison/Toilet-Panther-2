@@ -41,6 +41,9 @@ const prebeats = new Audio();
 prebeats.src = "/assets/audio/toiletbeat.wav";
 prebeats.loop = false;
 
+const toiletSlosh = new Audio();
+toiletSlosh.src = "/assets/audio/waterslosh.wav";
+
 ///// Start Button ///////////
 
 function start() {
@@ -171,6 +174,10 @@ socket.on('gameState', (data) => {
 				"\nPoints: "+data[i].points+
 				"\nAmmo: "+data[i].ammo , 20, 20
 			);
+			// soundfx
+			if (data[i].sound === "slosh") {
+				toiletSlosh.play();
+			}
 		}
 	}
 });

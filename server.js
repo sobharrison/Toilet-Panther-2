@@ -48,6 +48,7 @@ class User {
       "left": false,
       "right": false
     };
+    this.sound = null;
   }
 }
 
@@ -279,6 +280,7 @@ function gameLoop () {
 
   for (var id in users) {
     //move(id);
+    users[id].sound = null;
     users[id].move();
 
     users[id].sprite = "panther";//temperary
@@ -318,6 +320,7 @@ function gameLoop () {
     }
 
     if ( collision(users[id], toilet) ) {
+      users[id].sound = "slosh";
       PhysicsBumperCarToilet(users[id], toilet);
     }
     
@@ -362,7 +365,8 @@ User.prototype.clientData = function () {
     w: this.w,
     h: this.h,
     dx: this.dx,
-    dy: this.dy
+    dy: this.dy,
+    sound: this.sound
   };
 }
 
