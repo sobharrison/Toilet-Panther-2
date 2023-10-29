@@ -33,6 +33,14 @@ youPanther.src = "/assets/sprites/you_panther.svg";
 const toiletOoze = new Image();
 toiletOoze.src = "/assets/sprites/ooze_toilet.svg";
 
+const bgm = new Audio();
+bgm.src = "/assets/audio/toiletpanther.wav";
+bgm.loop = false;
+
+const prebeats = new Audio();
+prebeats.src = "/assets/audio/toiletbeat.wav";
+prebeats.loop = false;
+
 ///// Start Button ///////////
 
 function start() {
@@ -98,10 +106,16 @@ socket.on('pregame', (data) => {
 			"Nickname: "+data.nickname,
 			300, 200
 		);
+	} else {
+		if (prebeats.loop === false) {
+			prebeats.play();
+			prebeats.loop = true;
+		}
 	}
 });
 
 socket.on('endgame', (data) => {
+	bgm.pause();
 	gameview.fillStyle = "#333333";
  	gameview.fillRect(0, 0, 900, 900);
 	gameview.font = "24px Comic Sans MS";
@@ -119,6 +133,12 @@ socket.on('endgame', (data) => {
 });
 
 socket.on('gameState', (data) => {
+	if (bgm.loop === false) {
+		bgm.loop = true;
+		bgm.play();
+		prebeats.pause();
+		prebeats.loop = false;
+	}
 	gameview.drawImage(gameBackgroundImage, 0, 0, cWidth, cHeight);
 	//console.log(data);
 	for (var i=0;i < data.length; i++) {
