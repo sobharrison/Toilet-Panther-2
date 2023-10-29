@@ -33,6 +33,8 @@ youPanther.src = "/assets/sprites/you_panther.svg";
 const toiletOoze = new Image();
 toiletOoze.src = "/assets/sprites/ooze_toilet.svg";
 
+///// Audio Loading //////////
+
 const bgm = new Audio();
 bgm.src = "/assets/audio/toiletpanther.wav";
 bgm.loop = false;
@@ -52,6 +54,17 @@ plunge.src = "/assets/audio/handsanitizer.wav";
 
 const bump = new Audio();
 bump.src = "/assets/audio/marker.wav";
+
+///// Audio Mute /////////////
+
+function muteAudio() {
+	bgm.muted = !bgm.muted;
+	prebeats.muted = !prebeats.muted;
+	toiletSlosh.muted = !toiletSlosh.muted;
+	pop.muted = !pop.muted;
+	plunge.muted = !plunge.muted;
+	bump.muted = !bump.muted;
+}
 
 ///// Start Button ///////////
 

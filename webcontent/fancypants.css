@@ -42,7 +42,7 @@ canvas {
   	border-width: 2px;
 }
 
-#start {
+button {
 	font-family: "Comic Sans MS";
 	font-size: 24px;
 	color: #eeeeee;
@@ -63,11 +63,11 @@ canvas {
     	);
 }
 
-#start:hover {
+button:hover {
 	color: #aaaaaa;
 }
 
-#start:active {
+button:active {
 	color: #f39c12;
 
 	border-top-color: #a75e40;
