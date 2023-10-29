@@ -120,6 +120,7 @@ socket.on('pregame', (data) => {
 		);
 	} else {
 		if (prebeats.loop === false) {
+			prebeats.currentTime = 0;
 			prebeats.play();
 			prebeats.loop = true;
 		}
@@ -128,6 +129,10 @@ socket.on('pregame', (data) => {
 
 socket.on('endgame', (data) => {
 	bgm.pause();
+	bgm.loop = false;
+	bgm.currentTime = 0;
+	prebeats.loop = false;
+	prebeats.currentTime = 0;
 	gameview.fillStyle = "#333333";
  	gameview.fillRect(0, 0, 900, 900);
 	gameview.font = "24px Comic Sans MS";
@@ -147,6 +152,7 @@ socket.on('endgame', (data) => {
 socket.on('gameState', (data) => {
 	if (bgm.loop === false) {
 		bgm.loop = true;
+		bgm.currentTime = 0;
 		bgm.play();
 		prebeats.pause();
 		prebeats.loop = false;
