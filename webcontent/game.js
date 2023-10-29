@@ -44,6 +44,15 @@ prebeats.loop = false;
 const toiletSlosh = new Audio();
 toiletSlosh.src = "/assets/audio/waterslosh.wav";
 
+const pop = new Audio();
+pop.src = "/assets/audio/pop.wav";
+
+const plunge = new Audio();
+plunge.src = "/assets/audio/handsanitizer.wav";
+
+const bump = new Audio();
+bump.src = "/assets/audio/marker.wav";
+
 ///// Start Button ///////////
 
 function start() {
@@ -177,6 +186,12 @@ socket.on('gameState', (data) => {
 			// soundfx
 			if (data[i].sound === "slosh") {
 				toiletSlosh.play();
+			} else if (data[i].sound === "pop") {
+				pop.play();
+			} else if (data[i].sound === "plunge") {
+				plunge.play();
+			} else if (data[i].sound === "bump") {
+				bump.play();
 			}
 		}
 	}

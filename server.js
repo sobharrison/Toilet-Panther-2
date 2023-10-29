@@ -293,6 +293,7 @@ function gameLoop () {
         //users[id].sprite = "squareb"; // temporary
         plungers.splice(p, 1);
         p--;
+        users[id].sound = "plunge";
       }
     }
     // oozes
@@ -304,6 +305,7 @@ function gameLoop () {
           //users[id].sprite = "squareg";
           oozes.splice(o, 1);
           o--;
+          users[id].sound = "pop";
         } else {
           //users[id].sprite = "squareg";
         }
@@ -316,6 +318,7 @@ function gameLoop () {
       }
       if ( collision(users[id], users[iden]) ) {
         PhysicsBumperCar(users[id], users[iden]);
+        users[id].sound = "bump";
       }
     }
 
